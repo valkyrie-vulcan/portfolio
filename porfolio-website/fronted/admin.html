@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Your Name</title> <!-- ★ EDIT: Change Your Name -->
+
+    <style>
+        /* --- Global Styles & Variables (Consistent) --- */
+        :root {
+            --primary-color: #4a4e69;
+            --secondary-color: #9a8c98;
+            --accent-color: #c9ada7;
+            --light-color: #f2e9e4;
+            --dark-color: #22223b;
+            --text-color: #333;
+            --text-muted: #555;
+            --success-bg: #d4edda; /* Light green */
+            --success-text: #155724; /* Dark green */
+            --error-bg: #f8d7da;   /* Light red */
+            --error-text: #721c24;   /* Dark red */
+
+            --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-heading: 'Georgia', serif;
+
+            --spacing-unit: 1rem;
+            --border-radius: 5px;
+            --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 4px 10px rgba(0, 0, 0, 0.1);
+            --transition-speed: 0.3s;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 100%; }
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            background-color: var(--light-color);
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main { flex-grow: 1; padding: calc(var(--spacing-unit) * 2) 0; }
+        .container { max-width: 800px; /* Container for forms */ margin: 0 auto; padding: 0 calc(var(--spacing-unit) * 1.5); }
+        h1, h2 { font-family: var(--font-heading); color: var(--dark-color); line-height: 1.2; margin-bottom: calc(var(--spacing-unit) * 1.5); text-align: center; }
+        h1 { font-size: 2.5rem; margin-bottom: calc(var(--spacing-unit) * 2.5); }
+        h2 { font-size: 1.8rem; text-align: left; border-bottom: 1px solid var(--accent-color); padding-bottom: 0.5rem; }
+        p { margin-bottom: var(--spacing-unit); color: var(--text-muted); }
+        a { color: var(--primary-color); text-decoration: none; transition: color var(--transition-speed) ease; }
+        a:hover { color: var(--dark-color); }
+
+        /* --- Header & Navigation (Consistent) --- */
+        /* (Assuming you want the nav bar here too for consistency) */
+        .main-header { background-color: #fff; box-shadow: var(--shadow-light); padding: var(--spacing-unit) 0; position: sticky; top: 0; z-index: 1000; width: 100%; }
+        .main-nav { display: flex; justify-content: flex-end; align-items: center; max-width: 1100px; margin: 0 auto; padding: 0 calc(var(--spacing-unit) * 1.5); }
+        .nav-links { list-style: none; display: flex; }
+        .nav-links li { margin-left: calc(var(--spacing-unit) * 1.8); }
+        .nav-links a { color: var(--text-muted); font-weight: 500; padding: 0.5rem 0; position: relative; letter-spacing: 0.5px; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background-color: var(--primary-color); transition: width var(--transition-speed) ease; }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover { color: var(--primary-color); }
+
+
+        /* --- Admin Form Styling --- */
+        .admin-form {
+            background-color: #fff;
+            padding: calc(var(--spacing-unit) * 2);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-medium);
+            margin-bottom: calc(var(--spacing-unit) * 3);
+        }
+
+        .form-group {
+            margin-bottom: calc(var(--spacing-unit) * 1.5);
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: calc(var(--spacing-unit) * 0.5);
+            color: var(--dark-color);
+        }
+
+        .form-group input[type="text"],
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: calc(var(--spacing-unit) * 0.8);
+            border: 1px solid var(--accent-color);
+            border-radius: var(--border-radius);
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            transition: border-color var(--transition-speed) ease;
+        }
+         .form-group input[type="text"]:focus,
+         .form-group textarea:focus,
+         .form-group select:focus {
+             border-color: var(--primary-color);
+             outline: none;
+             box-shadow: 0 0 0 2px rgba(74, 78, 105, 0.2); /* Subtle focus ring */
+         }
+
+        .form-group textarea {
+            min-height: 100px; /* Decent default height */
+            resize: vertical; /* Allow vertical resize */
+        }
+
+        .form-group small { /* Hint text */
+            display: block;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-top: calc(var(--spacing-unit) * 0.3);
+        }
+
+        .submit-button {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            padding: calc(var(--spacing-unit) * 0.9) calc(var(--spacing-unit) * 2);
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color var(--transition-speed) ease, transform 0.2s ease;
+            box-shadow: var(--shadow-light);
+        }
+
+        .submit-button:hover {
+            background-color: var(--dark-color);
+            transform: translateY(-2px);
+        }
+         .submit-button:disabled {
+             background-color: var(--secondary-color);
+             cursor: not-allowed;
+             transform: none;
+         }
+
+        /* --- Feedback Message Styling --- */
+        .feedback-message {
+            padding: calc(var(--spacing-unit) * 1);
+            margin-top: calc(var(--spacing-unit) * 1.5);
+            border-radius: var(--border-radius);
+            font-size: 0.95rem;
+            display: none; /* Hidden by default */
+            border: 1px solid transparent;
+        }
+        .feedback-message.visible { display: block; }
+        .feedback-message.success {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border-color: darken(var(--success-bg), 10%);
+        }
+        .feedback-message.error {
+            background-color: var(--error-bg);
+            color: var(--error-text);
+            border-color: darken(var(--error-bg), 10%);
+        }
+
+        /* --- Footer (Consistent) --- */
+        .main-footer { text-align: center; padding: calc(var(--spacing-unit) * 2.5) 0; background-color: var(--dark-color); color: var(--accent-color); font-size: 0.9rem; width: 100%; margin-top: auto; /* Pushes footer down */ }
+        .main-footer p { color: var(--secondary-color); margin-bottom: 0; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <!-- Note: No active class here -->
+        <nav class="main-nav">
+            <ul class="nav-links">
+                <li><a href="index.html">About Me</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="qualifications.html">Qualifications</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <!-- Optional: Link back to main site or remove admin from public nav -->
+                 <li><a href="admin.html" style="color: var(--primary-color);">Admin</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+        <div class="container">
+            <h1>Admin Panel</h1>
+
+            <!-- Add Project Form -->
+            <section id="add-project-section">
+                <h2>Add New Project</h2>
+                <form id="add-project-form" class="admin-form">
+                    <div class="form-group">
+                        <label for="project-title">Project Title</label>
+                        <input type="text" id="project-title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-desc">Description</label>
+                        <textarea id="project-desc" name="desc" rows="4" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-clickable-type">Clickable Type</label>
+                        <select id="project-clickable-type" name="clickable_type" required>
+                            <option value="" disabled selected>Select type...</option>
+                            <option value="link">Link (URL)</option>
+                            <option value="image">Image (URL or Base64)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="project-clickable">Clickable Content</label>
+                        <textarea id="project-clickable" name="clickable" rows="3" required></textarea>
+                        <small>Enter the full URL (for links) or the image URL / full Base64 Data URI string (for images).</small>
+                    </div>
+                    <button type="submit" class="submit-button">Add Project</button>
+                    <p id="project-feedback" class="feedback-message"></p>
+                </form>
+            </section>
+
+            <!-- Add Blog Form -->
+            <section id="add-blog-section">
+                <h2>Add New Blog Post</h2>
+                <form id="add-blog-form" class="admin-form">
+                    <div class="form-group">
+                        <label for="blog-title">Blog Post Title</label>
+                        <input type="text" id="blog-title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="blog-desc">Content / Description</label>
+                        <textarea id="blog-desc" name="desc" rows="6" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="blog-img">Image Content</label>
+                        <textarea id="blog-img" name="img" rows="3"></textarea>
+                        <small>Optional. Enter the image URL or the full Base64 Data URI string.</small>
+                    </div>
+                    <button type="submit" class="submit-button">Add Blog Post</button>
+                    <p id="blog-feedback" class="feedback-message"></p>
+                </form>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>© <span id="current-year"></span> [Your Name Here] - Admin Area</p> <!-- ★ EDIT: Add your name ★ -->
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // API Endpoints - ★ Check these URLs ★
+        const ADD_PROJECT_ENDPOINT = 'http://127.0.0.1:5000/add_project';
+        const ADD_BLOG_ENDPOINT = 'http://127.0.0.1:5000/add_blog';
+
+        // Form Elements
+        const projectForm = document.getElementById('add-project-form');
+        const blogForm = document.getElementById('add-blog-form');
+        const projectFeedbackEl = document.getElementById('project-feedback');
+        const blogFeedbackEl = document.getElementById('blog-feedback');
+
+        // --- Helper Function to Display Feedback ---
+        function displayFeedback(element, message, isError = false) {
+            element.textContent = message;
+            element.className = 'feedback-message visible'; // Remove previous classes first
+            if (isError) {
+                element.classList.add('error');
+            } else {
+                element.classList.add('success');
+            }
+        }
+
+        // --- Helper Function to Handle API POST Requests ---
+        async function postData(url, data, formElement, feedbackElement) {
+             const submitButton = formElement.querySelector('button[type="submit"]');
+             submitButton.disabled = true; // Disable button during request
+             feedbackElement.className = 'feedback-message'; // Hide previous feedback
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data),
+                });
+
+                const result = await response.json(); // Try to parse JSON regardless of status
+
+                if (!response.ok) {
+                     // Use message from backend if available, otherwise use status text
+                     const errorMessage = result.message || result.error || `HTTP error! Status: ${response.status} ${response.statusText}`;
+                    throw new Error(errorMessage);
+                }
+
+                displayFeedback(feedbackElement, result.message || 'Operation successful!', false);
+                formElement.reset(); // Reset form on success
+
+            } catch (error) {
+                console.error('API Error:', error);
+                displayFeedback(feedbackElement, `Error: ${error.message}`, true);
+            } finally {
+                 submitButton.disabled = false; // Re-enable button
+            }
+        }
+
+
+        // --- Event Listener for Add Project Form ---
+        projectForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent default submission
+
+            const formData = new FormData(projectForm);
+            const projectData = {
+                title: formData.get('title'),
+                desc: formData.get('desc'),
+                clickable: formData.get('clickable'),
+                clickable_type: formData.get('clickable_type')
+            };
+
+            // Basic validation (ensure required fields aren't just whitespace)
+            if (!projectData.title?.trim() || !projectData.desc?.trim() || !projectData.clickable?.trim() || !projectData.clickable_type) {
+                displayFeedback(projectFeedbackEl, 'Please fill in all required project fields.', true);
+                return;
+            }
+
+            postData(ADD_PROJECT_ENDPOINT, projectData, projectForm, projectFeedbackEl);
+        });
+
+
+        // --- Event Listener for Add Blog Form ---
+        blogForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+
+            const formData = new FormData(blogForm);
+            const blogData = {
+                title: formData.get('title'),
+                desc: formData.get('desc'),
+                img: formData.get('img') // Can be empty if not provided
+            };
+
+             // Basic validation
+            if (!blogData.title?.trim() || !blogData.desc?.trim()) {
+                displayFeedback(blogFeedbackEl, 'Please fill in the title and description for the blog post.', true);
+                return;
+            }
+
+            // If img field is empty string, send null or don't include it, depending on backend expectation.
+            // Current backend seems okay with empty string being encoded. Let's send it as is.
+            // if (!blogData.img?.trim()) {
+            //     blogData.img = null; // Or delete blogData.img;
+            // }
+
+
+            postData(ADD_BLOG_ENDPOINT, blogData, blogForm, blogFeedbackEl);
+        });
+
+
+        // --- Initial Setup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set footer year
+            const currentYearEl = document.getElementById('current-year');
+            if (currentYearEl) {
+                currentYearEl.textContent = new Date().getFullYear();
+            }
+        });
+
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Your Name</title> <!-- ★ EDIT: Change Your Name ★ -->
+
+    <style>
+        /* --- Global Styles & Variables (Consistent with other pages) --- */
+        :root {
+            --primary-color: #4a4e69;
+            --secondary-color: #9a8c98;
+            --accent-color: #c9ada7;
+            --light-color: #f2e9e4;
+            --dark-color: #22223b;
+            --text-color: #333;
+            --text-muted: #555;
+
+            --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-heading: 'Georgia', serif;
+
+            --spacing-unit: 1rem;
+            --border-radius: 5px;
+            --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.08);
+            --shadow-medium: 0 4px 10px rgba(0, 0, 0, 0.1);
+            --transition-speed: 0.3s;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        html { scroll-behavior: smooth; font-size: 100%; }
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            background-color: var(--light-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        main { flex-grow: 1; }
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 calc(var(--spacing-unit) * 1.5); }
+        h1, h2, h3 { font-family: var(--font-heading); color: var(--dark-color); line-height: 1.2; margin-bottom: calc(var(--spacing-unit) * 0.8); }
+        h1 { font-size: 2.8rem; }
+        h2 { font-size: 2rem; text-align: center; margin-bottom: var(--spacing-unit) * 2.5;}
+        h3 { font-size: 1.4rem; color: var(--primary-color); }
+        p { margin-bottom: var(--spacing-unit); color: var(--text-muted); }
+        a { color: var(--primary-color); text-decoration: none; transition: color var(--transition-speed) ease; }
+        a:hover { color: var(--dark-color); }
+        img { max-width: 100%; height: auto; display: block; }
+
+        /* --- Utilities --- */
+        .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.6s ease-out, transform 0.6s ease-out; }
+        .fade-in.visible { opacity: 1; transform: translateY(0); }
+        .loading-message, .error-message { text-align: center; margin-top: var(--spacing-unit) * 2; font-style: italic; color: var(--text-muted); }
+
+        /* --- Header & Navigation (Consistent) --- */
+        .main-header { background-color: #fff; box-shadow: var(--shadow-light); padding: var(--spacing-unit) 0; position: sticky; top: 0; z-index: 1000; width: 100%; }
+        .main-nav { display: flex; justify-content: flex-end; align-items: center; }
+        .nav-links { list-style: none; display: flex; }
+        .nav-links li { margin-left: calc(var(--spacing-unit) * 1.8); }
+        .nav-links a { color: var(--text-muted); font-weight: 500; padding: 0.5rem 0; position: relative; letter-spacing: 0.5px; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 2px; background-color: var(--primary-color); transition: width var(--transition-speed) ease; }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+        .nav-links a:hover, .nav-links a.active { color: var(--primary-color); }
+
+        /* --- Projects Section --- */
+        #projects-section {
+            padding: calc(var(--spacing-unit) * 4) 0;
+            background-color: var(--light-color);
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: calc(var(--spacing-unit) * 2.5);
+        }
+
+        .project-card {
+            background-color: #fff;
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Important for containing image */
+        }
+
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* Container for the image */
+        .project-card-image {
+             height: 200px; /* Fixed height for image area */
+             background-color: var(--accent-color); /* Placeholder bg */
+             overflow: hidden; /* Hide parts of image that don't fit */
+             display: flex; /* Center placeholder text/icon if needed */
+             align-items: center;
+             justify-content: center;
+         }
+
+        .project-card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* Scale image nicely */
+            transition: transform 0.4s ease; /* Smooth zoom effect on hover */
+        }
+
+        .project-card:hover .project-card-image img {
+             transform: scale(1.05); /* Slight zoom on card hover */
+        }
+
+        /* Placeholder style when no image is available */
+        .project-card-image-placeholder {
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+             /* Add an icon font or SVG here for better visuals */
+             /* Example: content: '🖼️'; */
+        }
+
+
+        .project-card-content {
+            padding: calc(var(--spacing-unit) * 1.5); /* Slightly less padding */
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1; /* Allow content area to grow */
+        }
+
+        .project-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: calc(var(--spacing-unit) * 0.7);
+            color: var(--dark-color);
+        }
+
+        .project-card p {
+            font-size: 0.95rem;
+            margin-bottom: calc(var(--spacing-unit) * 1.5);
+            flex-grow: 1; /* Push button to bottom */
+        }
+
+        /* Specific style for the clickable link/button */
+        .project-link {
+            display: inline-block; /* Make it blocky */
+            background-color: var(--primary-color);
+            color: var(--light-color);
+            padding: calc(var(--spacing-unit) * 0.7) calc(var(--spacing-unit) * 1.5);
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            transition: background-color var(--transition-speed) ease, transform 0.2s ease;
+            box-shadow: var(--shadow-light);
+            text-align: center;
+            margin-top: auto; /* Push to bottom */
+            align-self: flex-start; /* Align button to the left */
+            text-decoration: none; /* Ensure no underline */
+        }
+
+        .project-link:hover {
+            background-color: var(--dark-color);
+            color: var(--light-color); /* Keep hover text color */
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        /* --- Footer (Consistent) --- */
+        .main-footer { text-align: center; padding: calc(var(--spacing-unit) * 2.5) 0; background-color: var(--dark-color); color: var(--accent-color); font-size: 0.9rem; width: 100%; }
+        .main-footer p { color: var(--secondary-color); margin-bottom: 0; }
+
+        /* --- Responsiveness --- */
+        @media (max-width: 768px) {
+             .main-nav { justify-content: center; }
+             .nav-links li { margin-left: var(--spacing-unit); margin-right: var(--spacing-unit); }
+             h2 { font-size: 1.8rem; }
+             .projects-grid { gap: calc(var(--spacing-unit) * 2); }
+             .project-card-image { height: 180px; } /* Adjust image height */
+        }
+        @media (max-width: 480px) {
+             html { font-size: 95%; }
+             .nav-links { font-size: 0.9rem; }
+             .nav-links li { margin-left: calc(var(--spacing-unit)*0.8); margin-right: calc(var(--spacing-unit)*0.8); }
+             .project-card-content { padding: calc(var(--spacing-unit) * 1.2); }
+             .project-card h3 { font-size: 1.2rem; }
+             .project-card-image { height: 160px; } /* Further adjust image height */
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="index.html">About Me</a></li>
+                    <li><a href="projects.html" class="active">Projects</a></li> <!-- Active page -->
+                    <li><a href="qualifications.html">Qualifications</a></li>
+                    <li><a href="blog.html">Blog</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+        <section id="projects-section">
+            <div class="container">
+                <h2>My Projects</h2>
+
+                <div id="projects-grid" class="projects-grid">
+                    <p id="loading-message" class="loading-message">Loading projects...</p>
+                    <p id="error-message" class="error-message" style="display: none;"></p>
+                    <!-- Project cards injected here -->
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>© <span id="current-year"></span> [Your Name Here]. All rights reserved.</p> <!-- ★ EDIT: Add your name ★ -->
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+
+    <script>
+        const projectsGrid = document.getElementById('projects-grid');
+        const loadingMessage = document.getElementById('loading-message');
+        const errorMessage = document.getElementById('error-message');
+        // ★ IMPORTANT: Ensure this URL matches your running Flask app ★
+        const API_ENDPOINT = 'http://127.0.0.1:5000/get_projects'; // Default Flask dev server
+
+        // --- Function to Decode Base64 and Prepend Scheme (for links) ---
+        function processClickableLink(base64String) {
+            if (!base64String) return null;
+            try {
+                let decodedUrl = atob(base64String); // Decode Base64
+                // Prepend https:// if it's missing a scheme and not empty
+                if (decodedUrl && !decodedUrl.startsWith('http://') && !decodedUrl.startsWith('https://')) {
+                    // Avoid prepending to empty strings or javascript: URLs etc.
+                    if (!decodedUrl.includes(':')) {
+                         decodedUrl = 'https://' + decodedUrl;
+                    }
+                }
+                return decodedUrl;
+            } catch (e) {
+                console.error("Error decoding Base64 string:", base64String, e);
+                return null; // Return null if decoding fails
+            }
+        }
+
+
+        // --- Function to Create and Populate Project Cards ---
+        function displayProjects(projectsData) {
+            loadingMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+            projectsGrid.innerHTML = ''; // Clear grid
+
+            if (!projectsData || projectsData.length === 0) {
+                projectsGrid.innerHTML = '<p class="loading-message">No projects found.</p>';
+                return;
+            }
+
+            projectsData.forEach(project => {
+                // --- Correctly access object properties ---
+                const id = project.id;
+                const title = project.title;
+                // Use the correct key 'desc' from the API response
+                const description = project.desc;
+                const rawClickable = project.clickable; // Get the raw value
+                const clickableType = project.clickable_type;
+
+                // --- Create card elements ---
+                const card = document.createElement('div');
+                card.className = 'project-card fade-in';
+
+                // --- Create Image Area ---
+                const imageContainer = document.createElement('div');
+                imageContainer.className = 'project-card-image';
+
+                let imageUrl = null;
+                if (clickableType === 'image' && rawClickable) {
+                    // Assuming rawClickable is a usable image URL or Base64 data URI
+                    // If it's *just* base64 image data, you might need:
+                    // imageUrl = `data:image/png;base64,${rawClickable}`; // Adjust mime type if needed
+                    imageUrl = rawClickable;
+                 }
+
+                if (imageUrl) {
+                     const img = document.createElement('img');
+                     img.src = imageUrl;
+                     img.alt = title || 'Project Image';
+                     img.loading = 'lazy';
+                     imageContainer.appendChild(img);
+                 } else {
+                     // Optional: Add a placeholder visual/icon if no image
+                     const placeholder = document.createElement('span');
+                     placeholder.className = 'project-card-image-placeholder';
+                     placeholder.textContent = '🖼️'; // Simple emoji placeholder
+                     imageContainer.appendChild(placeholder);
+                 }
+                card.appendChild(imageContainer); // Add image container first
+
+
+                // --- Create Content Area ---
+                const contentDiv = document.createElement('div');
+                contentDiv.className = 'project-card-content';
+
+                const titleEl = document.createElement('h3');
+                titleEl.textContent = title || 'Untitled Project'; // Use title variable
+
+                const descriptionEl = document.createElement('p');
+                descriptionEl.textContent = description || 'No description available.'; // Use description variable
+
+                contentDiv.appendChild(titleEl);
+                contentDiv.appendChild(descriptionEl);
+
+                // --- Create Clickable Link/Button ---
+                 // Only add the link if type is 'link'
+                if (clickableType === 'link') {
+                    // Decode the Base64 string and prepend scheme
+                    const finalUrl = processClickableLink(rawClickable);
+
+                    if (finalUrl) { // Only add link if decoding and processing were successful
+                        const linkEl = document.createElement('a');
+                        linkEl.className = 'project-link';
+                        linkEl.href = finalUrl; // Use the processed URL
+                        linkEl.textContent = 'Visit Project'; // Or 'View Code', 'Live Demo', etc.
+                        linkEl.target = '_blank'; // Open in new tab
+                        linkEl.rel = 'noopener noreferrer'; // Security measure
+                        contentDiv.appendChild(linkEl); // Add link to content
+                    } else {
+                        console.warn(`Could not process clickable link for project ID ${id}. Original data: ${rawClickable}`);
+                         // Optional: Add a disabled button or message here
+                    }
+                }
+                 // NOTE: If clickableType is 'image', we don't add a separate button here based on original logic
+
+                card.appendChild(contentDiv); // Add content div after image container
+                projectsGrid.appendChild(card); // Add completed card to grid
+            });
+
+            // Initialize the observer after cards are added
+            initializeObserver();
+        }
+
+        // --- Function to Fetch Project Data ---
+        async function fetchProjects() {
+            try {
+                const response = await fetch(API_ENDPOINT);
+                if (!response.ok) {
+                    // Try to get more specific error info if possible
+                    let errorBody = 'Could not retrieve error details.';
+                    try {
+                        errorBody = await response.text(); // or response.json() if backend sends JSON errors
+                    } catch(e) { /* Ignore error while parsing error */ }
+                    throw new Error(`HTTP error! Status: ${response.status}. Details: ${errorBody}`);
+                }
+                const data = await response.json();
+
+                // Log the fetched data to console for debugging
+                console.log("Fetched project data:", data);
+
+                // Check if the received data is actually an array
+                if (!Array.isArray(data)) {
+                    throw new Error(`API did not return an array. Received: ${typeof data}`);
+                }
+
+                displayProjects(data);
+
+            } catch (error) {
+                console.error('Error fetching projects:', error);
+                loadingMessage.style.display = 'none';
+                errorMessage.textContent = `Failed to load projects. Please check the backend connection or API response. (Error: ${error.message})`;
+                errorMessage.style.display = 'block';
+                projectsGrid.innerHTML = ''; // Clear grid on error
+            }
+        }
+
+        // --- Intersection Observer for Fade-in Animation ---
+        let observer;
+
+        function initializeObserver() {
+            const fadeInElements = document.querySelectorAll('.project-card.fade-in');
+            if (observer) { observer.disconnect(); }
+
+            const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+            observer = new IntersectionObserver((entries, obs) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        obs.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            fadeInElements.forEach(el => {
+                el.classList.remove('visible'); // Ensure it starts invisible
+                observer.observe(el);
+            });
+        }
+
+        // --- Initial Setup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentYearEl = document.getElementById('current-year');
+            if(currentYearEl) { currentYearEl.textContent = new Date().getFullYear(); }
+            fetchProjects();
+        });
+
+    </script>
+
+
+</body>
+</html>

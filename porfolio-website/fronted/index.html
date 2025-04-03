@@ -7,24 +7,36 @@
 
     <style>
         /* --- Global Styles & Variables --- */
-        :root {
-            --primary-color: #4a4e69; /* Muted purple/blue */
-            --secondary-color: #9a8c98; /* Muted mauve */
-            --accent-color: #c9ada7;  /* Soft neutral */
-            --light-color: #f2e9e4;   /* Off-white / very light beige */
-            --dark-color: #22223b;    /* Deep indigo */
-            --text-color: #333;
-            --text-muted: #555;
+        /* --- Paste this block into the :root section of EACH HTML file --- */
+:root {
+    /* Primary Palette - Inspired by Screenshot */
+    --light-color: #edf2f7;     /* Light Blue Background (like Tailwind's blue-100) */
+    --accent-color: #ffffff;    /* White (for Cards, Placeholders, Header BG) */
+    --dark-color: #1a202c;     /* Dark Grey/Charcoal (Headings, Footer BG, Hover states) */
+    --text-color: #2d3748;     /* Dark Grey Text (Slightly lighter than dark-color) */
+    --text-muted: #718096;     /* Medium Grey-Blue (Muted Text, Borders) */
 
-            --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            --font-heading: 'Georgia', serif; /* Slightly more distinct heading font */
+    /* Action Colors - Using a clear blue */
+    --primary-color: #3b82f6; /* Clear Blue (Links, Buttons, Active States - like Tailwind blue-500) */
+    --secondary-color: #93c5fd; /* Lighter shade of primary for gradients (e.g., skill bar - like Tailwind blue-300) */
 
-            --spacing-unit: 1rem;
-            --border-radius: 5px;
-            --shadow-light: 0 2px 5px rgba(0, 0, 0, 0.08);
-            --shadow-medium: 0 4px 10px rgba(0, 0, 0, 0.1);
-            --transition-speed: 0.3s;
-        }
+    /* Fonts & Layout (Keep Existing) */
+    --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-heading: 'Georgia', serif;
+    --spacing-unit: 1rem;
+    --border-radius: 5px;
+    --transition-speed: 0.3s;
+
+    /* Shadows - Adjusted slightly for lighter theme */
+    --shadow-light: 0 2px 5px rgba(45, 55, 72, 0.08); /* Use text-color with low alpha */
+    --shadow-medium: 0 4px 10px rgba(45, 55, 72, 0.1);
+
+    /* Feedback colors (Adjusted for new theme) */
+    --success-bg: #d1fae5; /* Lighter green */
+    --success-text: #047857; /* Darker teal/green */
+    --error-bg: #fee2e2;   /* Lighter red */
+    --error-text: #b91c1c;   /* Darker red */
+}
 
         *,
         *::before,

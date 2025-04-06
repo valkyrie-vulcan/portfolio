@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Qualifications - Your Name</title> <!-- ★ EDIT: Change Your Name ★ -->
+
+    <style>
+        /* --- Global Styles & Variables (Same as index.html for consistency) --- */
+       /* --- Paste this block into the :root section of EACH HTML file --- */
+:root {
+    /* Primary Palette - Inspired by Screenshot */
+    --light-color: #edf2f7;     /* Light Blue Background (like Tailwind's blue-100) */
+    --accent-color: #ffffff;    /* White (for Cards, Placeholders, Header BG) */
+    --dark-color: #1a202c;     /* Dark Grey/Charcoal (Headings, Footer BG, Hover states) */
+    --text-color: #2d3748;     /* Dark Grey Text (Slightly lighter than dark-color) */
+    --text-muted: #718096;     /* Medium Grey-Blue (Muted Text, Borders) */
+
+    /* Action Colors - Using a clear blue */
+    --primary-color: #3b82f6; /* Clear Blue (Links, Buttons, Active States - like Tailwind blue-500) */
+    --secondary-color: #93c5fd; /* Lighter shade of primary for gradients (e.g., skill bar - like Tailwind blue-300) */
+
+    /* Fonts & Layout (Keep Existing) */
+    --font-primary: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --font-heading: 'Georgia', serif;
+    --spacing-unit: 1rem;
+    --border-radius: 5px;
+    --transition-speed: 0.3s;
+
+    /* Shadows - Adjusted slightly for lighter theme */
+    --shadow-light: 0 2px 5px rgba(45, 55, 72, 0.08); /* Use text-color with low alpha */
+    --shadow-medium: 0 4px 10px rgba(45, 55, 72, 0.1);
+
+    /* Feedback colors (Adjusted for new theme) */
+    --success-bg: #d1fae5; /* Lighter green */
+    --success-text: #047857; /* Darker teal/green */
+    --error-bg: #fee2e2;   /* Lighter red */
+    --error-text: #b91c1c;   /* Darker red */
+}
+
+        *::before,
+        *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 100%;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            line-height: 1.6;
+            background-color: var(--light-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            display: flex; /* Use flexbox for sticky footer */
+            flex-direction: column; /* Stack elements vertically */
+            min-height: 100vh; /* Ensure body takes at least full viewport height */
+        }
+
+        main {
+            flex-grow: 1; /* Allow main content to grow and push footer down */
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 calc(var(--spacing-unit) * 1.5);
+        }
+
+        h1, h2, h3 {
+            font-family: var(--font-heading);
+            color: var(--dark-color);
+            line-height: 1.2;
+            margin-bottom: calc(var(--spacing-unit) * 0.8);
+        }
+
+        h1 { font-size: 2.8rem; }
+        h2 { font-size: 2rem; text-align: center; margin-bottom: var(--spacing-unit) * 2.5;}
+        h3 { font-size: 1.4rem; color: var(--primary-color); }
+
+        p {
+            margin-bottom: var(--spacing-unit);
+            color: var(--text-muted);
+        }
+
+        a {
+            color: var(--primary-color);
+            text-decoration: none;
+            transition: color var(--transition-speed) ease;
+        }
+
+        a:hover {
+            color: var(--dark-color);
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        /* --- Utilities (Same as index.html) --- */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* --- Header & Navigation (Same as index.html, but check active class) --- */
+        .main-header {
+            background-color: #fff;
+            box-shadow: var(--shadow-light);
+            padding: var(--spacing-unit) 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
+
+        .main-nav {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+        }
+
+        .nav-links {
+            list-style: none;
+            display: flex;
+        }
+
+        .nav-links li {
+            margin-left: calc(var(--spacing-unit) * 1.8);
+        }
+
+        .nav-links a {
+            color: var(--text-muted);
+            font-weight: 500;
+            padding: 0.5rem 0;
+            position: relative;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--primary-color);
+            transition: width var(--transition-speed) ease;
+        }
+
+        .nav-links a:hover::after,
+        .nav-links a.active::after { /* Ensure this targets the active link */
+            width: 100%;
+        }
+
+        .nav-links a:hover,
+        .nav-links a.active { /* Ensure this targets the active link */
+            color: var(--primary-color);
+        }
+
+        /* --- Qualifications Section --- */
+        #qualifications {
+            padding: calc(var(--spacing-unit) * 4) 0;
+            background-color: #fff; /* Contrast with body */
+        }
+
+        .skills-grid {
+            display: grid;
+            /* Adjust minmax for desired card width. 280px is a good starting point */
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: calc(var(--spacing-unit) * 2);
+        }
+
+        .skill-card {
+            background-color: var(--light-color);
+            padding: calc(var(--spacing-unit) * 1.8);
+            border-radius: var(--border-radius);
+            box-shadow: var(--shadow-light);
+            transition: transform var(--transition-speed) ease, box-shadow var(--transition-speed) ease;
+            display: flex;
+            flex-direction: column; /* Stack content vertically */
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-medium);
+        }
+
+        .skill-card h3 {
+            font-size: 1.3rem; /* Slightly smaller heading for cards */
+            margin-bottom: calc(var(--spacing-unit) * 0.6);
+            color: var(--dark-color); /* Darker heading for readability */
+        }
+
+        .skill-card p {
+            font-size: 0.95rem;
+            margin-bottom: calc(var(--spacing-unit) * 1.5); /* Space before skill bar */
+            flex-grow: 1; /* Allow description to take available space if cards vary in height */
+        }
+
+        /* --- Skill Level Bar --- */
+        .skill-level-label {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: calc(var(--spacing-unit) * 0.3);
+            display: block; /* Ensure it takes its own line */
+        }
+
+        .skill-level-bar-container {
+            width: 100%;
+            height: 10px; /* Adjust height as needed */
+            background-color: var(--accent-color); /* Lighter background for the bar */
+            border-radius: 5px;
+            overflow: hidden; /* Keep the inner bar contained */
+            margin-top: auto; /* Push the bar to the bottom if description is short */
+        }
+
+        .skill-level-bar {
+            height: 100%;
+            width: 0%; /* Will be set by JS */
+            background-color: var(--primary-color); /* Main color for the fill */
+            border-radius: 5px;
+             /* Animate the width change */
+            transition: width 1s ease-out;
+            /* Add a subtle gradient for a bit more visual interest */
+            background-image: linear-gradient(to right, var(--secondary-color), var(--primary-color));
+        }
+
+
+        /* --- Footer (Same as index.html) --- */
+        .main-footer {
+            text-align: center;
+            padding: calc(var(--spacing-unit) * 2.5) 0;
+            /* Removed margin-top as flex-grow on main handles spacing */
+            background-color: var(--dark-color);
+            color: var(--accent-color);
+            font-size: 0.9rem;
+            width: 100%; /* Ensure footer spans full width */
+        }
+
+        .main-footer p {
+             color: var(--secondary-color);
+             margin-bottom: 0;
+        }
+
+        /* --- Responsiveness (Inherited, potentially adjust grid/card padding if needed) --- */
+        @media (max-width: 768px) {
+             /* Adjust nav centering if kept from index.html */
+             .main-nav {
+                 justify-content: center; /* Center nav on smaller screens for now */
+             }
+             .nav-links li {
+                 margin-left: var(--spacing-unit);
+                 margin-right: var(--spacing-unit);
+             }
+            .skills-grid {
+                 /* Maybe reduce gap slightly on smaller screens */
+                 gap: calc(var(--spacing-unit) * 1.5);
+            }
+             h2 {
+                 font-size: 1.8rem; /* Adjust heading size */
+             }
+        }
+
+        @media (max-width: 480px) {
+             html { font-size: 95%; }
+             .nav-links {
+                font-size: 0.9rem;
+             }
+              .nav-links li {
+                 margin-left: calc(var(--spacing-unit)*0.8);
+                 margin-right: calc(var(--spacing-unit)*0.8);
+             }
+             .skill-card {
+                padding: calc(var(--spacing-unit) * 1.5);
+             }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header class="main-header">
+        <div class="container">
+            <nav class="main-nav">
+                <ul class="nav-links">
+                    <li><a href="index.html">About Me</a></li> <!-- Link back to home -->
+                    <li><a href="projects.html">Projects</a></li>
+                    <!-- Research link removed -->
+                    <li><a href="qualifications.html" class="active">Qualifications</a></li> <!-- This page is active -->
+                    <li><a href="blog.html">Blog</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main>
+        <section id="qualifications">
+            <div class="container">
+                <h2>Qualifications & Skills</h2>
+
+                <!-- Grid where skill cards will be injected -->
+                <div id="skills-grid" class="skills-grid">
+                    <!-- Skill cards will be generated here by JavaScript -->
+                </div>
+
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <p>© <span id="current-year"></span> [Your Name Here]. All rights reserved.</p> <!-- ★ EDIT: Add your name ★ -->
+        </div>
+    </footer>
+
+    <!-- JavaScript for dynamic elements -->
+    <script>
+        // --- Hardcoded Skill Data ---
+        // ★ EDIT: Replace this with your actual skills, descriptions, and estimated levels (0-100) ★
+        const skillsData = [
+            {
+                name: "HTML5 & CSS3",
+                description: "Structuring web content semantically and creating responsive, modern layouts with Flexbox, Grid, and custom properties.",
+                level: 90 // Percentage (0-100)
+            },
+            {
+                name: "JavaScript (ES6+)",
+                description: "DOM manipulation, asynchronous programming (Promises, async/await), interacting with APIs, and building interactive user interfaces.",
+                level: 85
+            },
+            {
+                name: "React.js",
+                description: "Component-based architecture, state management (useState, useContext), hooks, routing, and building single-page applications.",
+                level: 75
+            },
+             {
+                name: "Node.js & Express",
+                description: "Building RESTful APIs, server-side logic, middleware implementation, and database integration (e.g., MongoDB).",
+                level: 70
+            },
+            {
+                name: "Version Control (Git)",
+                description: "Proficient in using Git for branching, merging, pull requests, and collaborating effectively within development teams.",
+                level: 88
+            },
+            {
+                name: "UI/UX Principles",
+                description: "Understanding user-centered design, accessibility standards, wireframing, and creating intuitive user experiences.",
+                level: 65
+            },
+             {
+                name: "Problem Solving",
+                description: "Deconstructing complex problems, debugging code efficiently, and designing logical, maintainable solutions.",
+                level: 95
+            },
+            {
+                name: "Communication",
+                description: "Clearly articulating technical concepts to both technical and non-technical audiences, active listening, and teamwork.",
+                level: 90
+            }
+            // Add more skills as needed
+        ];
+
+        // --- Function to Create and Populate Skill Cards ---
+        function populateSkills() {
+            const skillsGrid = document.getElementById('skills-grid');
+            if (!skillsGrid) {
+                console.error("Skill grid container not found!");
+                return;
+            }
+
+             // Clear existing content if any (useful for potential future updates)
+            skillsGrid.innerHTML = '';
+
+            skillsData.forEach(skill => {
+                // Create card elements
+                const card = document.createElement('div');
+                card.className = 'skill-card fade-in'; // Add fade-in class for animation
+
+                const title = document.createElement('h3');
+                title.textContent = skill.name;
+
+                const description = document.createElement('p');
+                description.textContent = skill.description;
+
+                const levelLabel = document.createElement('span');
+                levelLabel.className = 'skill-level-label';
+                levelLabel.textContent = `Proficiency Level: ${skill.level}%`; // Add text label
+
+                const barContainer = document.createElement('div');
+                barContainer.className = 'skill-level-bar-container';
+
+                const bar = document.createElement('div');
+                bar.className = 'skill-level-bar';
+                // Set width via style - will be animated by CSS transition if observer triggers after load
+                 bar.style.width = '0%'; // Start at 0%
+                 // Store the target width in a data attribute to set it when visible
+                 bar.dataset.level = skill.level;
+
+
+                // Assemble the card
+                barContainer.appendChild(bar);
+                card.appendChild(title);
+                card.appendChild(description);
+                card.appendChild(levelLabel); // Add the label
+                card.appendChild(barContainer);
+
+                // Add card to the grid
+                skillsGrid.appendChild(card);
+            });
+        }
+
+
+        // --- Footer Year Update ---
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+
+
+        // --- Intersection Observer for Fade-in Animation ---
+        // Slight modification: Animate the progress bar width when the card becomes visible
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1 // Trigger when 10% of the element is visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+
+                    // Find the progress bar within the now visible card
+                    const progressBar = entry.target.querySelector('.skill-level-bar');
+                    if (progressBar && progressBar.dataset.level) {
+                       // Set the width to trigger the CSS transition
+                       setTimeout(() => { // Small delay allows the element to render before animating
+                           progressBar.style.width = `${progressBar.dataset.level}%`;
+                       }, 100);
+                    }
+
+                    // Optional: Stop observing once animated
+                    // observer.unobserve(entry.target);
+                }
+                // Optional: Reset if it scrolls out of view
+                // else {
+                //     entry.target.classList.remove('visible');
+                //     const progressBar = entry.target.querySelector('.skill-level-bar');
+                //      if (progressBar) {
+                //         progressBar.style.width = '0%'; // Reset width
+                //     }
+                // }
+            });
+        }, observerOptions);
+
+        // --- Initial Setup on DOMContentLoaded ---
+        document.addEventListener('DOMContentLoaded', () => {
+            populateSkills(); // Create the skill cards
+
+            // Select ALL elements that need fading in (including newly created cards)
+            const fadeInElements = document.querySelectorAll('.fade-in');
+
+             // Observe each element
+            fadeInElements.forEach(el => {
+                observer.observe(el);
+            });
+        });
+
+    </script>
+
+</body>
+</html>

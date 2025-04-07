@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+f<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -417,6 +417,7 @@
                     <li><a href="projects.html">Projects</a></li>
                     <li><a href="qualifications.html">Qualifications</a></li>
                     <li><a href="blog.html">Blog</a></li>
+                    <li><a href="resources.html">Resources</a></li>
                 </ul>
             </nav>
         </div>
@@ -438,12 +439,12 @@
                     <!-- Text Content -->
                     <div class="hero-text fade-in">
                          <p class="greeting">Hello there! I'm</p>
-                         <h1>[Your Name Here]</h1> <!-- ★ EDIT: Add your name ★ -->
+                         <h1>Tanush</h1>
                          <p>
                             <!-- ★ EDIT: Fill this section with your compelling introduction/bio. ★ -->
-                            Welcome to my personal space on the web! I'm passionate about [Your Main Field/Interest, e.g., creating intuitive web experiences, exploring data science, building innovative software]. Here you'll find a collection of my work, thoughts, and experiences. Dive in to learn more about what drives me.
+                            Welcome to my corner of the internet! I'm passionate about exploring the intersections of economics, finance, tech policy, and sustainability. As an Ashoka University student, I've analyzed certification standards for WWF India, conducted international infrastructure audits, and developed environmental impact assessments that make a difference. Here you'll find a collection of my work, thoughts, and experiences from quizzing competitions to sports journalism. Dive in to learn more about what drives me.RetryClaude can make mistakes. Please double-check responses.
                          </p>
-                         <a href="projects.html" class="cta-button">View My Work</a>
+                         <a href="/documents/resume.pdf" class="cta-button" download="Tanush_Guha_Resume.pdf">Download CV</a>
                     </div>
                 </div>
             </div>
@@ -456,31 +457,28 @@
                 <div class="highlights-grid">
                     <!-- Highlight Card 1 -->
                     <div class="highlight-card fade-in">
-                        <div class="icon">💡</div> <!-- ★ Replace with a relevant icon later ★ -->
-                        <h3>[Key Skill/Area 1]</h3> <!-- ★ EDIT: e.g., Front-End Development ★ -->
+                        <div class="icon">💡</div>
+                        <h3>Content Creation</h3>
                         <p>
-                            <!-- ★ EDIT: Short description ★ -->
-                            Crafting responsive, user-friendly interfaces with modern web technologies.
+                            Creating engaging content across multiple platforms, from financial reporting to sports journalism, with a focus on audience engagement.
                         </p>
                     </div>
 
                     <!-- Highlight Card 2 -->
                     <div class="highlight-card fade-in">
-                        <div class="icon">⚙️</div> <!-- ★ Replace with a relevant icon later ★ -->
-                        <h3>[Key Skill/Area 2]</h3> <!-- ★ EDIT: e.g., Problem Solving ★ -->
+                        <div class="icon">⚙️</div>
+                        <h3>Data-Driven Analysis</h3>
                         <p>
-                           <!-- ★ EDIT: Short description ★ -->
                            Analyzing complex challenges and designing effective, scalable solutions.
                         </p>
                     </div>
 
                     <!-- Highlight Card 3 -->
                      <div class="highlight-card fade-in">
-                        <div class="icon">🌱</div> <!-- ★ Replace with a relevant icon later ★ -->
-                        <h3>[Key Skill/Area 3]</h3> <!-- ★ EDIT: e.g., Continuous Learning ★ -->
+                        <div class="icon">🌱</div>
+                        <h3>Sustainability Strategy</h3>
                         <p>
-                            <!-- ★ EDIT: Short description ★ -->
-                           Constantly exploring new technologies and methodologies to stay ahead.
+                            Developing sustainable business frameworks and certification standards for ethical sourcing and environmental impact assessment.
                         </p>
                     </div>
                 </div>
@@ -513,9 +511,11 @@
 
                     <div class="contact-form fade-in">
                         <h3>Send a Message</h3>
-                        <form method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/thank-you.html"
+                        <form name="contact" method="POST" data-netlify="true" data-netlify-honeypot="bot-field" action="/thank-you.html">
                             <input type="hidden" name="form-name" value="contact">
-                            <p style="display: none;"><label>Don’t fill this out if you’re human: <input name="bot-field"></label></p>
+                            <p hidden>
+                                <label>Don’t fill this out if you're human: <input name="bot-field" /></label>
+                            </p>
                             <div class="form-group">
                                 <label for="contact-name">Name</label>
                                 <input type="text" id="contact-name" name="name" required>
